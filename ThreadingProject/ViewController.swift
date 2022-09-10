@@ -23,10 +23,16 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         tableView.delegate = self
         tableView.dataSource = self
         
-        data = try! Data(contentsOf: URL(string: imageString[tracker])!)
-        imageView.image = UIImage(data: data)
-       
+
+        DispatchQueue.global().async {
+            self.data = try! Data(contentsOf: URL(string: self.imageString[self.tracker])!)
+            DispatchQueue.main.async {
+                self.imageView.image = UIImage(data: self.data)
+
+            }
+        }
         
+
         self.navigationController?.navigationBar.topItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.action, target: self, action: #selector(changePhoto))
     }
     @objc func changePhoto(){
@@ -37,8 +43,14 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             tracker -= 1
         }
         
-        data = try! Data(contentsOf: URL(string: imageString[tracker])!)
-        imageView.image = UIImage(data: data)
+        
+        DispatchQueue.global().async {
+            self.data = try! Data(contentsOf: URL(string: self.imageString[self.tracker])!)
+            DispatchQueue.main.async {
+                self.imageView.image = UIImage(data: self.data)
+            }
+        }
+    
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 48
